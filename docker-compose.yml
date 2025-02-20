@@ -1,0 +1,19 @@
+services:
+  selenium:
+    image: seleniarm/standalone-chromium:123.0
+    shm_size: 2gb
+    ports:
+      - "4444:4444"
+      - "7900:7900"
+    environment:
+      - SE_NODE_MAX_SESSIONS=5
+
+  ruby:
+    build: .
+    volumes:
+      - .:/app
+    depends_on:
+      - selenium
+    environment:
+      - SELENIUM_HOST=selenium
+      - TARGET_URL=https://www.kanimiso.org/column
